@@ -1,4 +1,16 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Res
+} from '@nestjs/common';
 
 @Controller('products')
 export class ProductsController {
@@ -14,8 +26,13 @@ export class ProductsController {
     }
 
     @Get(':id')
-    getProductById(@Param('id') id:number): string {
-        return `This is the product with id ${id}`;
+    getProductById(@Res() response, @Param('id') id:number): string {
+        if(id < 100) {
+            return response.status(HttpStatus.OK).send(`This is the product with id ${id}`);
+        } else {
+            return response.status(HttpStatus.NOT_FOUND).send('The product does not exist');
+        }
+
     }
 
     // @Post()
@@ -25,6 +42,7 @@ export class ProductsController {
     // }
 
     @Post()
+    @HttpCode(HttpStatus.NO_CONTENT)
     createProduct(@Body('name') name: string
                   , @Body('description') description: string): string {
         return `Your product is ${name} and the description is 
@@ -41,6 +59,7 @@ export class ProductsController {
 
     @Delete(':id')
     deleteProduct(@Param('id') id: number): string {
+        throw new BadRequestException('You cannot delete the product');
         return 'Product has been deleted';
     }
 }
