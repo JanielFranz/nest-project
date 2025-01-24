@@ -28,8 +28,6 @@ export class ProductsController {
         return this.productsService.findById(id);
     }
 
-
-
     @Post()
     createProduct(@Body() body: any): Product {
         return this.productsService.addProduct(body);
