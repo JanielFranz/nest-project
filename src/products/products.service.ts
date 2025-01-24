@@ -1,5 +1,6 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {Product} from "./product.interface";
+import {ProductDto} from "./dto/product.dto";
 
 @Injectable()
 export class ProductsService {
@@ -8,11 +9,13 @@ export class ProductsService {
             id: 1,
             name: 'First product',
             description: 'This is the description of the first product',
+            stock: 0
         },
         {
             id: 2,
             name: 'Second product',
             description: 'This is the description of the second product',
+            stock: 12
         }
     ];
 
@@ -27,24 +30,26 @@ export class ProductsService {
         throw new NotFoundException(`Product with id ${id} not found`);
     }
 
-    addProduct(product: any): Product {
+    addProduct(product: ProductDto): Product {
         this.products = [
             ...this.products,
             {
                 id: this.lookUpLastId() + 1,
                 name: product.name,
-                description: product.description
+                description: product.description,
+                stock: product.stock
             }
         ]
 
         return this.findById(this.lookUpLastId());
     }
 
-    updateProduct(id: number, product: any) : Product {
+    updateProduct(id: number, product: ProductDto) : Product {
         let updatedProduct : Product = {
             id,
             name: product.name,
-            description: product.description
+            description: product.description,
+            stock: product.stock
         }
         this.products = this.products.map((item) => {
             return item.id == id ? updatedProduct : item;
