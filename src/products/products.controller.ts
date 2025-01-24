@@ -6,7 +6,7 @@ import {
     Get,
     HttpCode,
     HttpStatus,
-    Param,
+    Param, ParseIntPipe,
     Post,
     Put,
     Res
@@ -24,7 +24,9 @@ export class ProductsController {
     }
 
     @Get(':id')
-    getProductById(@Param('id') id:number): Product {
+    getProductById(@Param('id',
+        new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+                       id:number): Product {
         return this.productsService.findById(id);
     }
 
