@@ -6,7 +6,7 @@ import {
     Get,
     HttpCode,
     HttpStatus,
-    Param, ParseIntPipe,
+    Param, ParseIntPipe, Patch,
     Post,
     Put,
     Res
@@ -14,6 +14,7 @@ import {
 import {ProductsService} from "./products.service";
 import {Product} from "./product.interface";
 import {ProductDto} from "./dto/product.dto";
+import {ProductPatchDto} from "./dto/product-patch.dto";
 
 @Controller('products')
 export class ProductsController {
@@ -48,5 +49,10 @@ export class ProductsController {
     deleteProduct(@Param('id') id: number): string {
         this.productsService.deleteProduct(id);
         return 'Product deleted';
+    }
+
+    @Patch(':id')
+    patchProduct(@Param('id') id: number, @Body() body: ProductPatchDto): Product {
+        return this.productsService.patch(id, body);
     }
 }
