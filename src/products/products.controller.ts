@@ -9,7 +9,7 @@ import {
     Param, ParseIntPipe, Patch,
     Post,
     Put,
-    Res
+    Res, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import {ProductsService} from "./products.service";
 import {Product} from "./product.interface";
@@ -33,14 +33,16 @@ export class ProductsController {
     }
 
     @Post()
-    createProduct(@Body() body: ProductDto): Product {
+    @UsePipes(new ValidationPipe())
+    async createProduct(@Body() body: ProductDto): Promise<Product> {
         return this.productsService.addProduct(body);
     }
 
     @Put(':id')
-    updateProduct(@Param('id') id: number,
+    async updateProduct(@Param('id') id: number,
                   @Body() body: ProductDto
-    ) : Product {
+    ) : Promise<Product> {
+        console.log(body)
         return this.productsService.updateProduct(id, body);
     }
 

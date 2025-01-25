@@ -1,4 +1,4 @@
-import {Controller, Get} from '@nestjs/common';
+import {Controller, Get, Param} from '@nestjs/common';
 import {TagsService} from "./tags.service";
 import {Tag} from "./tag.interface";
 
@@ -9,5 +9,10 @@ export class TagsController {
     @Get()
     getAllTags() : Tag[] {
         return this.tagsService.findAllTags();
+    }
+
+    @Get(':id')
+    find(@Param('id') id: number) : void {
+        console.log(id, typeof id);
     }
 }
