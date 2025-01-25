@@ -21,14 +21,14 @@ export class ProductsController {
 
     constructor(private readonly productsService: ProductsService) { }
     @Get()
-    getAllProducts() : Product[] {
+    getAllProducts(): Promise<Product[]> {
         return this.productsService.findAll();
     }
 
     @Get(':id')
     getProductById(@Param('id',
         new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
-                       id:number): Product {
+                       id:number): Promise<Product> {
         return this.productsService.findById(id);
     }
 
@@ -48,13 +48,12 @@ export class ProductsController {
 
     @Delete(':id')
     @HttpCode(204)
-    deleteProduct(@Param('id') id: number): string {
-        this.productsService.deleteProduct(id);
-        return 'Product deleted';
+    async deleteProduct(@Param('id') id: number): Promise<void> {
+        return await this.productsService.deleteProduct(id);
     }
 
     @Patch(':id')
-    patchProduct(@Param('id') id: number, @Body() body: ProductPatchDto): Product {
-        return this.productsService.patch(id, body);
+    async patchProduct(@Param('id') id: number, @Body() body: ProductPatchDto) : Promise<Product> {
+        return await this.productsService.updateProduct(id, body);
     }
 }
