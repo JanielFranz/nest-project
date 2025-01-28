@@ -1,6 +1,7 @@
-import {Column, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Product} from "./product.entity";
 
+@Entity('reviews')
 export class Review {
     @PrimaryGeneratedColumn()
     id: number;
