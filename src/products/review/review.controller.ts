@@ -7,11 +7,11 @@ export class ReviewController {
     constructor(private readonly reviewService: ReviewService) { }
 
     @Post(':id/review')
-    createReview(
+     async createReview(
         @Param('id', ParseIntPipe) id: number,
         @Body() body: ReviewDto
     ){
-        this.reviewService.addReview(id, body);
+        return this.reviewService.addReview(id, body);
     }
 
 }
