@@ -1,4 +1,4 @@
-import {IsInt, IsString, Length, Min} from "class-validator";
+import {IsArray, IsInt, IsString, Length, Min} from "class-validator";
 
 export class ProductDto {
     @IsString({
@@ -13,4 +13,8 @@ export class ProductDto {
     @IsInt()
     @Min(0, { message: "stock has to be a positive number" })
     stock: number;
+
+    @IsString({ each: true })
+    @IsArray()
+    sizes: string[];
 }
