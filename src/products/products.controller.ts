@@ -21,7 +21,8 @@ export class ProductsController {
 
     constructor(private readonly productsService: ProductsService) { }
     @Get()
-    getAllProducts(@Query('limit') limit: number): Promise<Product[]> {
+    getAllProducts(@Query('limit', ParseIntPipe) limit: number): Promise<Product[]> {
+        console.log(limit)
         return this.productsService.findAll(limit);
     }
 

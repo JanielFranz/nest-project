@@ -18,6 +18,7 @@ export class ProductsService {
     ) { }
 
     findAll(limit: number) : Promise<Product[]> {
+        console.log(limit)
         return this.productRepository.find({
                 take: limit
         });
