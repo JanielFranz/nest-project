@@ -8,7 +8,7 @@ import {
     HttpStatus,
     Param, ParseIntPipe, Patch,
     Post,
-    Put,
+    Put, Query,
     Res, UsePipes, ValidationPipe
 } from '@nestjs/common';
 import {ProductsService} from "./products.service";
@@ -21,8 +21,8 @@ export class ProductsController {
 
     constructor(private readonly productsService: ProductsService) { }
     @Get()
-    getAllProducts(): Promise<Product[]> {
-        return this.productsService.findAll();
+    getAllProducts(@Query('limit') limit: number): Promise<Product[]> {
+        return this.productsService.findAll(limit);
     }
 
     @Get(':id')

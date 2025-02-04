@@ -2,7 +2,7 @@ import {Injectable, NotFoundException} from '@nestjs/common';
 import {Product} from "./entities/product.entity";
 import {ProductDto} from "./dto/product.dto";
 import {ProductPatchDto} from "./dto/product-patch.dto";
-import {Repository} from "typeorm";
+import {Like, MoreThan, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Size} from "./entities/size.entity";
 
@@ -17,8 +17,10 @@ export class ProductsService {
 
     ) { }
 
-    findAll() : Promise<Product[]> {
-        return this.productRepository.find();
+    findAll(limit: number) : Promise<Product[]> {
+        return this.productRepository.find({
+                take: limit
+        });
     }
 
     async findById(id: number) : Promise<Product> {
