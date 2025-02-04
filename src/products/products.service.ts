@@ -5,6 +5,7 @@ import {ProductPatchDto} from "./dto/product-patch.dto";
 import {Like, MoreThan, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Size} from "./entities/size.entity";
+import {QueryProductsDto} from "./dto/query-products.dto";
 
 @Injectable()
 export class ProductsService {
@@ -17,10 +18,19 @@ export class ProductsService {
 
     ) { }
 
-    findAll(limit: number) : Promise<Product[]> {
-        console.log(limit)
+    findAll(query: QueryProductsDto) : Promise<Product[]> {
+        console.log(query.limit);
         return this.productRepository.find({
-                take: limit
+                take: query.limit,
+            where: [
+                { name: Like(`%${query.query}%`) },
+                { description: Like(`%${query.query}%`) }
+            ],
+            order: {
+                    [query.order]: 'ASC' //[] is used to pass a variable as a key
+            }
+
+
         });
     }
 

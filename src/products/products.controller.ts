@@ -15,16 +15,21 @@ import {ProductsService} from "./products.service";
 import {Product} from "./entities/product.entity";
 import {ProductDto} from "./dto/product.dto";
 import {ProductPatchDto} from "./dto/product-patch.dto";
+import {QueryProductsDto} from "./dto/query-products.dto";
 
 @Controller('products')
 export class ProductsController {
 
     constructor(private readonly productsService: ProductsService) { }
     @Get()
-    getAllProducts(@Query() query): Promise<Product[]> {
-        let limit =  query.limit ? query.limit : 2;
-        if(isNaN(limit))  limit = 2;
-        return this.productsService.findAll(limit);
+    getAllProducts(@Query() query: QueryProductsDto): Promise<Product[]> {
+        const defaultQuery = {
+            limit: 10,
+            order: 'name',
+            query: ''
+        }
+        query = {...defaultQuery, ...query}; //merge default query with query
+        return this.productsService.findAll(query);
     }
 
     @Get(':id')
